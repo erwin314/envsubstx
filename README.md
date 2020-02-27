@@ -8,9 +8,9 @@ The code has been refactored for building just the command line tool and generat
 
 #### Usage
 ```sh
-envsubst < someproperties.tmpl > someproperties.config
-echo 'welcome $HOME ${USER:=defaultuser}' | envsubst
-envsubst -help
+envsubstx < someproperties.tmpl > someproperties.config
+echo 'welcome $HOME ${USER:=defaultuser}' | envsubstx
+envsubstx -help
 ```
 
 #### Imposing restrictions
