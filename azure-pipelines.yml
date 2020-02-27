@@ -1,0 +1,43 @@
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+ 
+strategy:
+  matrix:
+    linux:
+      artifactname: 'envsubstx-linux-amd64'
+      outputname: 'envsubstx'
+      GOOS: 'linux'
+      GOARCH: 'amd64'
+    mac:
+      artifactname: 'envsubstx-macos-amd64'
+      outputname: 'envsubstx'
+      GOOS: 'darwin'
+      GOARCH: 'amd64'
+    windows:
+      artifactname: 'envsubstx-win-amd64'
+      outputname: 'envsubstx.exe'
+      GOOS: 'windows'
+      GOARCH: 'amd64'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: GoTool@0
+  inputs:
+    version: '1.13.5'
+
+- task: Go@0
+  inputs:
+    command: 'build'
+    arguments: '-ldflags="-s -w" -o "$(Build.ArtifactStagingDirectory)/$(outputname)"'
+
+- script: upx --best --ultra-brute "$(Build.ArtifactStagingDirectory)/$(outputname)"
+  displayName: Compress executable
+
+- task: PublishBuildArtifacts@1
+  inputs:
+      artifactName: $(artifactname)

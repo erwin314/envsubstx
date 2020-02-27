@@ -1,5 +1,5 @@
 // Most of the code in this package taken from golang/text/template/parse
-package parse
+package main
 
 import (
 	"errors"

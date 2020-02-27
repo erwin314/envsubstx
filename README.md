@@ -1,40 +1,15 @@
-# envsubst
-[![GoDoc][godoc-img]][godoc-url]
-[![License][license-image]][license-url]
-[![Build status][travis-image]][travis-url]
-[![Github All Releases][releases-image]][releases]
+#### What is this? 
+This is a command line tool for environment variables substitution. There is also support for default values, something the regular envsubst (of the operating system) does not have.
 
-> Environment variables substitution for Go. see docs [below](#docs)
+It's main usage is substituting environment variables in property files. This is useful in docker entry point files.
 
-#### Installation:
+This code is based on: https://github.com/a8m/envsubst
+The code has been refactored for building just the command line tool and generating smaller binaries.
 
-##### From binaries
-Latest stable `envsubst` [prebuilt binaries for 64-bit Linux, or Mac OS X][releases] are available via Github releases.
-
-###### Linux and MacOS
-```console
-curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`uname -s`-`uname -m` -o envsubst
-chmod +x envsubst
-sudo mv envsubst /usr/local/bin
-```
-
-###### Windows
-Download the latest prebuilt binary from [releases page][releases], or if you have curl installed:
-```console
-curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst.exe
-```
-
-##### With go
-You can install via `go get` (provided you have installed go):
-```console
-go get github.com/a8m/envsubst/cmd/envsubst
-```
-
-
-#### Using via cli
+#### Usage
 ```sh
-envsubst < input.tmpl > output.text
-echo 'welcome $HOME ${USER:=a8m}' | envsubst
+envsubst < someproperties.tmpl > someproperties.config
+echo 'welcome $HOME ${USER:=defaultuser}' | envsubst
 envsubst -help
 ```
 
@@ -48,27 +23,7 @@ There are two command line flags with which you can cause the substitution to st
 
 These flags can be combined to form tighter restrictions. 
 
-#### Using `envsubst` programmatically ?
-You can take a look on [`_example/main`](https://github.com/a8m/envsubst/blob/master/_example/main.go) or see the example below.
-```go
-package main
-
-import (
-	"fmt"
-	"github.com/a8m/envsubst"
-)
-
-func main() {
-    input := "welcom $HOME"
-    str, err := envsubst.String(input)
-    // ...
-    buf, err := envsubst.Bytes([]byte(input))
-    // ...
-    buf, err := envsubst.ReadFile("filename")
-}
-```
-### Docs
-> api docs here: [![GoDoc][godoc-img]][godoc-url]
+### Supported expressions
 
 |__Expression__     | __Meaning__    |
 | ----------------- | -------------- |
@@ -83,18 +38,5 @@ func main() {
 
 <sub>Most of the rows in this table were taken from [here](http://www.tldp.org/LDP/abs/html/refcards.html#AEN22728)</sub>
 
-### See also
-
-* `os.ExpandEnv(s string) string` - only supports `$var` and `${var}` notations
-
 #### License
 MIT
-
-[releases]: https://github.com/a8m/envsubst/releases
-[releases-image]: https://img.shields.io/github/downloads/a8m/envsubst/total.svg?style=for-the-badge
-[godoc-url]: https://godoc.org/github.com/a8m/envsubst
-[godoc-img]: https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge
-[license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge
-[license-url]: LICENSE
-[travis-image]: https://img.shields.io/travis/a8m/envsubst.svg?style=for-the-badge
-[travis-url]: https://travis-ci.org/a8m/envsubst

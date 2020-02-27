@@ -1,10 +1,8 @@
-package envsubst
+package main
 
 import (
 	"io/ioutil"
 	"os"
-
-	"github.com/a8m/envsubst/parse"
 )
 
 // String returns the parsed template string after processing it.
@@ -17,8 +15,8 @@ func String(s string) (string, error) {
 // If the parser encounters invalid input, or a restriction is violated, it returns
 // an error describing the failure.
 func StringRestricted(s string, noUnset, noEmpty bool) (string, error) {
-	return parse.New("string", os.Environ(),
-		&parse.Restrictions{noUnset, noEmpty}).Parse(s)
+	return New("string", os.Environ(),
+		&Restrictions{noUnset, noEmpty}).Parse(s)
 }
 
 // Bytes returns the bytes represented by the parsed template after processing it.
@@ -31,8 +29,8 @@ func Bytes(b []byte) ([]byte, error) {
 // If the parser encounters invalid input, or a restriction is violated, it returns
 // an error describing the failure.
 func BytesRestricted(b []byte, noUnset, noEmpty bool) ([]byte, error) {
-	s, err := parse.New("bytes", os.Environ(),
-		&parse.Restrictions{noUnset, noEmpty}).Parse(string(b))
+	s, err := New("bytes", os.Environ(),
+		&Restrictions{noUnset, noEmpty}).Parse(string(b))
 	if err != nil {
 		return nil, err
 	}

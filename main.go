@@ -8,7 +8,6 @@ import (
 	"io"
 	"os"
 
-	"github.com/a8m/envsubst"
 )
 
 var (
@@ -73,7 +72,7 @@ func main() {
 		file = os.Stdout
 	}
 	// Parse input string
-	result, err := envsubst.StringRestricted(data, *noUnset, *noEmpty)
+	result, err := StringRestricted(data, *noUnset, *noEmpty)
 	if err != nil {
 		errorAndExit(err)
 	}
